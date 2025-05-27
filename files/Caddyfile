@@ -1,0 +1,42 @@
+# This is a template Caddyfile that will be updated by the startup script
+# The actual domain will be replaced dynamically based on instance metadata or user data
+
+{$JENKINS_DOMAIN:localhost} {
+    reverse_proxy localhost:8080 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+    
+    # Enable compression
+    encode gzip
+    
+    # Security headers
+    header {
+        # Hide server information
+        -Server
+        
+        # Security headers
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        X-XSS-Protection "1; mode=block"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+    
+    # Health check endpoint
+    handle /health {
+        respond "OK" 200
+    }
+    
+    # Jenkins handles everything else
+    handle {
+        reverse_proxy localhost:8080
+    }
+}
+
+# HTTP redirect (Caddy handles this automatically, but being explicit)
+http://{$JENKINS_DOMAIN:localhost} {
+    redir https://{host}{uri} permanent
+}
