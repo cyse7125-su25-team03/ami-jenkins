@@ -1,0 +1,103 @@
+# Packer build artifacts
+packer_cache/
+*.box
+builds/
+output-*/
+
+# Packer logs
+*.log
+packer.log
+build.log
+
+# Packer variable files with sensitive data
+*.auto.pkrvars.hcl
+secrets.pkrvars.hcl
+prod.pkrvars.hcl
+staging.pkrvars.hcl
+
+# AWS credentials and config
+.aws/
+aws-credentials
+*.pem
+*.key
+
+# Terraform state files (if using Terraform alongside)
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform/
+.terraform.lock.hcl
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.staging
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Archive files
+*.zip
+*.tar
+*.tar.gz
+*.rar
+
+# Custom variable files (keep example, ignore actual)
+my-*.pkrvars.hcl
+local-*.pkrvars.hcl
+custom-*.pkrvars.hcl
+
+# SSH keys
+id_rsa*
+id_ed25519*
+*.ppk
+
+# Certificate files
+*.crt
+*.cert
+*.cer
+*.p12
+*.pfx
+
+# Documentation build artifacts
+site/
+docs/_build/
+
+# Python virtual environments (if using Python scripts)
+venv/
+env/
+.venv/
+
+# Node modules (if using any Node.js tools)
+node_modules/
+
+# Local test files
+test-*
+local-test-*
