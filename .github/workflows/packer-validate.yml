@@ -1,0 +1,28 @@
+name: Packer Template Check
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+jobs:
+  packer-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run Packer init
+        run: |
+          packer init .
+
+      - name: Run Packer fmt
+        id: packer-fmt
+        run: |
+          packer fmt -check=true .
+
+      - name: Run Packer validate
+        id: packer-validate
+        run: |
+          packer validate .
