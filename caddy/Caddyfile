@@ -1,7 +1,7 @@
 # This is a template Caddyfile that will be updated by the startup script
 # The actual domain will be replaced dynamically based on instance metadata or user data
 
-{$JENKINS_DOMAIN:localhost} {
+jenkins.manikhandan.me {
     reverse_proxy localhost:8080 {
         header_up Host {host}
         header_up X-Real-IP {remote_host}
@@ -37,6 +37,6 @@
 }
 
 # HTTP redirect (Caddy handles this automatically, but being explicit)
-http://{$JENKINS_DOMAIN:localhost} {
+http://jenkins.manikhandan.me {
     redir https://{host}{uri} permanent
 }

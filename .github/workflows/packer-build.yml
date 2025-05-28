@@ -20,10 +20,22 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Initialize Packer
+        run: packer init .
+
       - name: Build AMI with Packer
         run: |
-          packer init .
-          packer build .
+          packer build \
+            -var "aws_profile=${{ vars.AWS_PROFILE }}" \
+            -var "region=${{ secrets.REGION }}" \
+            -var "instance_type=${{ secrets.INSTANCE_TYPE }}" \
+            -var "ami_name=${{ secrets.AMI_NAME }}" \
+            -var "ami_source_ami=${{ secrets.AMI_SOURCE_AMI }}" \
+            -var "volume_size=${{ secrets.VOLUME_SIZE }}" \
+            -var "ssh_username=${{ secrets.SSH_USERNAME }}" \
+            -var "subnet_id=${{ secrets.SUBNET_ID }}" \
+            .
+
 
 
     
