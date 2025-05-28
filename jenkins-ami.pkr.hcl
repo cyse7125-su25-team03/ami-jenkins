@@ -48,15 +48,15 @@ variable "subnet_id" {
 }
 
 source "amazon-ebs" "ubuntu" {
-  profile      = var.aws_profile
-  ami_name      = "${var.ami_name}-{{timestamp}}"
+  profile         = var.aws_profile
+  ami_name        = "${var.ami_name}-{{timestamp}}"
   ami_description = "Jenkins with Caddy AMI built on Ubuntu 24.04 LTS"
-  instance_type = var.instance_type
-  region        = var.region
-  source_ami    = var.ami_source
+  instance_type   = var.instance_type
+  region          = var.region
+  source_ami      = var.ami_source
 
-  ssh_username  = var.ssh_username
-  subnet_id     = var.subnet_id
+  ssh_username = var.ssh_username
+  subnet_id    = var.subnet_id
 
   launch_block_device_mappings {
     delete_on_termination = true
@@ -74,7 +74,7 @@ source "amazon-ebs" "ubuntu" {
 }
 
 build {
-  name    = "jenkins-ami-build"
+  name = "jenkins-ami-build"
   sources = [
     "source.amazon-ebs.ubuntu"
   ]
