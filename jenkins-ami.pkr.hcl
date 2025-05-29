@@ -9,7 +9,7 @@ packer {
 
 variable "aws_profile" {
   type    = string
-  default = "root-mk"
+  default = "root"
 }
 
 variable "region" {
@@ -48,7 +48,6 @@ variable "subnet_id" {
 }
 
 source "amazon-ebs" "ubuntu" {
-  profile         = var.aws_profile
   ami_name        = "${var.ami_name}-{{timestamp}}"
   ami_description = "Jenkins with Caddy AMI built on Ubuntu 24.04 LTS"
   instance_type   = var.instance_type
@@ -95,7 +94,7 @@ build {
 
   provisioner "shell" {
     inline = [
-      "chmod +x /tmp/install.sh",
+      "sudo chmod +x /tmp/install.sh",
       "sudo /tmp/install.sh"
     ]
   }

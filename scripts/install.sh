@@ -42,4 +42,3 @@ sudo systemctl enable jenkins
 sudo systemctl enable caddy
 sudo systemctl restart jenkins
 sudo systemctl restart caddy
-
