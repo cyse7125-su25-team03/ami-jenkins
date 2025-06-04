@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-ami:
-    if: github.event.pull_request.merged == true || github.repository == 'cyse7125-su25-team03/ami-jenkins'
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -26,8 +26,12 @@ jobs:
       - name: Build AMI with Packer
         run: |
           packer build \
+            -var "aws_profile=${{ vars.AWS_PROFILE }}" \
+            -var "region=${{ secrets.REGION }}" \
+            -var "instance_type=${{ secrets.INSTANCE_TYPE }}" \
+            -var "ami_name=${{ secrets.AMI_NAME }}" \
+            -var "ami_source_ami=${{ secrets.AMI_SOURCE_AMI }}" \
+            -var "volume_size=${{ secrets.VOLUME_SIZE }}" \
+            -var "ssh_username=${{ secrets.SSH_USERNAME }}" \
+            -var "subnet_id=${{ secrets.SUBNET_ID }}" \
             .
-
-
-
-    

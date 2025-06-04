@@ -26,7 +26,7 @@ sudo mv /tmp/plugins.txt /var/lib/jenkins/plugins.txt
 wget -q https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.13.2/jenkins-plugin-manager-2.13.2.jar -O /opt/jenkins-plugin-manager.jar
 
 sudo java -jar /opt/jenkins-plugin-manager.jar \
-  --war /usr/share/jenkins/jenkins.war \
+  --war /usr/share/java/jenkins.war \
   --plugin-download-directory /var/lib/jenkins/plugins \
   --plugin-file /var/lib/jenkins/plugins.txt
 
@@ -37,7 +37,12 @@ sudo mv /tmp/Caddyfile /etc/caddy/Caddyfile
 sudo chown root:root /etc/caddy/Caddyfile
 sudo chmod 644 /etc/caddy/Caddyfile
 
+# Disable timeout
+sudo mkdir -p /etc/systemd/system/jenkins.service.d
+echo -e "[Service]\nTimeoutStartSec=900s" | sudo tee /etc/systemd/system/jenkins.service.d/override.conf
+
 # Enable services
+sudo systemctl daemon-reload
 sudo systemctl enable jenkins
 sudo systemctl enable caddy
 sudo systemctl restart jenkins
