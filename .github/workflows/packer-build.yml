@@ -30,7 +30,7 @@ jobs:
             -var "region=${{ secrets.REGION }}" \
             -var "instance_type=${{ secrets.INSTANCE_TYPE }}" \
             -var "ami_name=${{ secrets.AMI_NAME }}" \
-            -var "ami_source_ami=${{ secrets.AMI_SOURCE_AMI }}" \
+            -var "ami_source=${{ secrets.AMI_SOURCE }}" \
             -var "volume_size=${{ secrets.VOLUME_SIZE }}" \
             -var "ssh_username=${{ secrets.SSH_USERNAME }}" \
             -var "subnet_id=${{ secrets.SUBNET_ID }}" \
