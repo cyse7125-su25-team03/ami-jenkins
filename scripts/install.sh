@@ -6,7 +6,7 @@ sudo apt update && sudo apt upgrade -y
 
 # install dependencies
 sudo apt install -y \
-  openjdk-17-jdk \
+  openjdk-21-jdk \
   software-properties-common 
 
 # Install Jenkins
