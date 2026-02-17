@@ -30,6 +30,9 @@ sudo java -jar /opt/jenkins-plugin-manager.jar \
   --plugin-download-directory /var/lib/jenkins/plugins \
   --plugin-file /var/lib/jenkins/plugins.txt
 
+sudo systemctl start jenkins
+sleep 5
+sudo systemctl stop jenkins
 sudo chown -R jenkins:jenkins /var/lib/jenkins/plugins
 
 # Replace default Caddyfile with reverse proxy for Jenkins
