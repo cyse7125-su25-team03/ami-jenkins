@@ -1,6 +1,6 @@
 # Jenkins AMI with Caddy Reverse Proxy
 
-This Packer configuration creates an AWS AMI with Jenkins and Caddy pre-installed. The AMI includes essential Jenkins plugins and is configured to automatically obtain SSL certificates from Let's Encrypt when launched.
+This Packer configuration creates an AWS AMI with Jenkins and Caddy pre-installed. The AMI includes essential Jenkins plugins and is configured to automatically obtain SSL certificates from Let's Encrypt when launched
 
 ## Features
 
