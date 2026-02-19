@@ -30,6 +30,7 @@ pipeline-github-lib:latest
 pipeline-stage-view:latest
 plain-credentials:latest
 plugin-util-api:latest
+pipeline-utility-steps:latest
 semantic-versioning-plugin:latest
 ssh-slaves:latest
 timestamper:latest

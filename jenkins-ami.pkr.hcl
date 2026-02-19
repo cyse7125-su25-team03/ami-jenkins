@@ -47,6 +47,37 @@ variable "subnet_id" {
   default = "subnet-xxxxxxxxxxxxxxxxxx"
 }
 
+variable "jenkins_admin_user" {
+  type      = string
+  default   = "admin"
+  sensitive = true
+}
+
+variable "jenkins_admin_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "dockerhub_username" {
+  type      = string
+  sensitive = true
+}
+
+variable "dockerhub_token" {
+  type      = string
+  sensitive = true
+}
+
+variable "github_username" {
+  type      = string
+  sensitive = true
+}
+
+variable "github_token" {
+  type      = string
+  sensitive = true
+}
+
 source "amazon-ebs" "ubuntu" {
   profile         = var.aws_profile
   ami_name        = "${var.ami_name}-{{timestamp}}"
@@ -91,6 +122,38 @@ build {
   provisioner "file" {
     source      = "./scripts/install.sh"
     destination = "/tmp/install.sh"
+  }
+
+  provisioner "file" {
+    source      = "./scripts/init/admin-setup.groovy"
+    destination = "/tmp/admin-setup.groovy"
+  }
+
+  provisioner "file" {
+    source      = "./scripts/init/credentials-setup.groovy"
+    destination = "/tmp/credentials-setup.groovy"
+  }
+
+  provisioner "file" {
+    source      = "./scripts/init/seed-job.groovy"
+    destination = "/tmp/seed-job.groovy"
+  }
+
+  provisioner "file" {
+    source      = "./jobs/static-site-job.groovy"
+    destination = "/tmp/static-site-job.groovy"
+  }
+
+  # Write credentials to Jenkins environment file
+  provisioner "shell" {
+    inline = [
+      "echo 'JENKINS_ADMIN_USER=${var.jenkins_admin_user}' | sudo tee -a /etc/default/jenkins",
+      "echo 'JENKINS_ADMIN_PASSWORD=${var.jenkins_admin_password}' | sudo tee -a /etc/default/jenkins",
+      "echo 'DOCKERHUB_USERNAME=${var.dockerhub_username}' | sudo tee -a /etc/default/jenkins",
+      "echo 'DOCKERHUB_TOKEN=${var.dockerhub_token}' | sudo tee -a /etc/default/jenkins",
+      "echo 'GITHUB_USERNAME=${var.github_username}' | sudo tee -a /etc/default/jenkins",
+      "echo 'GITHUB_TOKEN=${var.github_token}' | sudo tee -a /etc/default/jenkins",
+    ]
   }
 
   provisioner "shell" {
