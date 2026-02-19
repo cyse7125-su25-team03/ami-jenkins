@@ -5,6 +5,7 @@ cloudbees-folder:latest
 command-launcher:latest
 configuration-as-code:latest
 configuration-as-code-groovy:latest
+conventional-commits:latest
 credentials:latest
 credentials-binding:latest
 display-url-api:latest
