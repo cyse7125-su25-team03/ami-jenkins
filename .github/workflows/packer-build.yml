@@ -34,4 +34,10 @@ jobs:
             -var "volume_size=${{ secrets.VOLUME_SIZE }}" \
             -var "ssh_username=${{ secrets.SSH_USERNAME }}" \
             -var "subnet_id=${{ secrets.SUBNET_ID }}" \
+            -var "jenkins_admin_user=${{ secrets.JENKINS_ADMIN_USER }}" \
+            -var "jenkins_admin_password=${{ secrets.JENKINS_ADMIN_PASSWORD }}" \
+            -var "dockerhub_username=${{ secrets.DOCKERHUB_USERNAME }}" \
+            -var "dockerhub_token=${{ secrets.DOCKERHUB_TOKEN }}" \
+            -var "github_username=${{ secrets.GIT_USERNAME }}" \
+            -var "github_token=${{ secrets.GIT_TOKEN }}" \
             .

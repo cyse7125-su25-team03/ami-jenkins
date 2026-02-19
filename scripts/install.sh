@@ -23,6 +23,20 @@ curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --d
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
 sudo apt-get update && sudo apt-get install -y caddy
 
+# Install Docker (needed for Jenkins to build container images)
+sudo apt-get install -y ca-certificates gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin
+
+# Add jenkins user to docker group so it can run docker commands
+sudo usermod -aG docker jenkins
+
 # Install plugins
 sudo mkdir -p /var/lib/jenkins/plugins
 sudo mv /tmp/plugins.txt /var/lib/jenkins/plugins.txt
@@ -40,13 +54,28 @@ sudo mv /tmp/Caddyfile /etc/caddy/Caddyfile
 sudo chown root:root /etc/caddy/Caddyfile
 sudo chmod 644 /etc/caddy/Caddyfile
 
+# Setup Jenkins init scripts directory
+sudo mkdir -p /var/lib/jenkins/init.groovy.d
+sudo mv /tmp/admin-setup.groovy /var/lib/jenkins/init.groovy.d/admin-setup.groovy
+sudo mv /tmp/credentials-setup.groovy /var/lib/jenkins/init.groovy.d/credentials-setup.groovy
+sudo mv /tmp/seed-job.groovy /var/lib/jenkins/init.groovy.d/seed-job.groovy
+sudo chown -R jenkins:jenkins /var/lib/jenkins/init.groovy.d/
+
+# Setup seed job workspace with DSL scripts
+sudo mkdir -p /var/lib/jenkins/workspace/seed-job
+sudo mv /tmp/static-site-job.groovy /var/lib/jenkins/workspace/seed-job/static-site-job.groovy
+sudo chown -R jenkins:jenkins /var/lib/jenkins/workspace/seed-job
+
 # Disable timeout
 sudo mkdir -p /etc/systemd/system/jenkins.service.d
-echo -e "[Service]\nTimeoutStartSec=900s" | sudo tee /etc/systemd/system/jenkins.service.d/override.conf
+cat <<EOF | sudo tee /etc/systemd/system/jenkins.service.d/override.conf
+[Service]
+TimeoutStartSec=900s
+Environment="JAVA_OPTS=-Djenkins.install.runSetupWizard=false"
+EOF
 
 # Enable services
 sudo systemctl daemon-reload
 sudo systemctl enable jenkins
 sudo systemctl enable caddy
-sudo systemctl restart jenkins
-sudo systemctl restart caddy
+sudo systemctl enable docker
