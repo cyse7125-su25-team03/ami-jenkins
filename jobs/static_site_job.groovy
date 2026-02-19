@@ -3,24 +3,30 @@ multibranchPipelineJob('static-site') {
     description('Build and publish multi-platform container image for static-site to DockerHub')
 
     branchSources {
-        github {
-            id('static-site')
-            repoOwner('cyse7125-su25-team03')  // Replace with your org name
-            repository('static-site')
-            scanCredentialsId('github-credentials')
-            buildForkPRMerge(false)
-            buildOriginBranch(true)
-            buildOriginPRMerge(false)
-            buildOriginBranchWithPR(false)
-        }
-    }
-
-    // Only build the main branch
-    configure {
-        def traits = it / sources / data / 'jenkins.branch.BranchSource' / source / traits
-        traits << 'jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait' {
-            includes('main')
-            excludes('')
+        branchSource {
+            source {
+                github {
+                    id('static-site')
+                    repoOwner('__GITHUB_ORG__')
+                    repository('__GITHUB_REPO__')
+                    credentialsId('github-credentials')
+                    configuredByUrl(true)
+                    repositoryUrl('https://github.com/__GITHUB_ORG__/__GITHUB_REPO__.git')
+                    buildForkPRMerge(false)
+                    buildOriginBranch(true)
+                    buildOriginPRMerge(true)
+                    buildOriginBranchWithPR(false)
+                    traits {
+                        gitHubBranchDiscovery {
+                            strategyId(1) // Exclude branches that are also PRs
+                        }
+                        headWildcardFilter {
+                            includes('main')
+                            excludes('')
+                        }
+                    }
+                }
+            }
         }
     }
 
