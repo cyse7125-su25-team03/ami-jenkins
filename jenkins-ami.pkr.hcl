@@ -140,8 +140,8 @@ build {
   }
 
   provisioner "file" {
-    source      = "./jobs/static-site-job.groovy"
-    destination = "/tmp/static-site-job.groovy"
+    source      = "./jobs/static_site_job.groovy"
+    destination = "/tmp/static_site_job.groovy"
   }
 
   # Write credentials to Jenkins environment file

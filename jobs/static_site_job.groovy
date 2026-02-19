@@ -5,7 +5,7 @@ multibranchPipelineJob('static-site') {
     branchSources {
         github {
             id('static-site')
-            repoOwner('cyse7125-su24-teamNN')  // Replace with your org name
+            repoOwner('cyse7125-su25-team03')  // Replace with your org name
             repository('static-site')
             scanCredentialsId('github-credentials')
             buildForkPRMerge(false)
