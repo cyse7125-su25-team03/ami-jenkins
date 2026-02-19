@@ -8,9 +8,19 @@ multibranchPipelineJob('static-site') {
             repoOwner('cyse7125-su24-teamNN')  // Replace with your org name
             repository('static-site')
             scanCredentialsId('github-credentials')
-            buildForkPRMerge(true)
+            buildForkPRMerge(false)
             buildOriginBranch(true)
-            buildOriginPRMerge(true)
+            buildOriginPRMerge(false)
+            buildOriginBranchWithPR(false)
+        }
+    }
+
+    // Only build the main branch
+    configure {
+        def traits = it / sources / data / 'jenkins.branch.BranchSource' / source / traits
+        traits << 'jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait' {
+            includes('main')
+            excludes('')
         }
     }
 
