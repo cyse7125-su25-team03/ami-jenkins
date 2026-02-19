@@ -1,6 +1,8 @@
 import javaposse.jobdsl.plugin.*
 import hudson.model.*
 import jenkins.model.*
+import javaposse.jobdsl.plugin.GlobalJobDslSecurityConfiguration
+import jenkins.model.GlobalConfiguration
 
 def jenkins = Jenkins.getInstance()
 
@@ -9,6 +11,9 @@ if (jenkins.getItem('seed-job') != null) {
     println("Seed job already exists, skipping creation.")
     return
 }
+
+GlobalConfiguration.all().get(GlobalJobDslSecurityConfiguration.class).useScriptSecurity = false
+GlobalConfiguration.all().get(GlobalJobDslSecurityConfiguration.class).save()
 
 println("Creating seed job...")
 
@@ -27,9 +32,7 @@ def configXml = """<?xml version='1.1' encoding='UTF-8'?>
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <javaposse.jobdsl.plugin.ExecuteDslScripts>
-      <scriptLocation>
-        <targets>*.groovy</targets>
-      </scriptLocation>
+      <targets>static_site_job.groovy</targets>
       <usingScriptText>false</usingScriptText>
       <sandbox>false</sandbox>
       <ignoreExisting>false</ignoreExisting>
