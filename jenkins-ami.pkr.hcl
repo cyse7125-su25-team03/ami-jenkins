@@ -78,6 +78,16 @@ variable "github_token" {
   sensitive = true
 }
 
+variable "github_org" {
+  type    = string
+  default = "cyse7125-su25-team03"
+}
+
+variable "github_repo" {
+  type    = string
+  default = "static-site"
+}
+
 source "amazon-ebs" "ubuntu" {
   profile         = var.aws_profile
   ami_name        = "${var.ami_name}-{{timestamp}}"
@@ -159,7 +169,9 @@ build {
   provisioner "shell" {
     inline = [
       "sudo chmod +x /tmp/install.sh",
-      "sudo /tmp/install.sh"
+      "sudo /tmp/install.sh",
+      "sudo sed -i 's|__GITHUB_ORG__|${var.github_org}|g' /var/lib/jenkins/workspace/seed-job/static_site_job.groovy",
+      "sudo sed -i 's|__GITHUB_REPO__|${var.github_repo}|g' /var/lib/jenkins/workspace/seed-job/static_site_job.groovy"
     ]
   }
 }
