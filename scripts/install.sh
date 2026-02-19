@@ -70,7 +70,7 @@ sudo chown -R jenkins:jenkins /var/lib/jenkins/init.groovy.d/
 # Setup seed job workspace with DSL scripts
 sudo mkdir -p /var/lib/jenkins/workspace/seed-job
 sudo mv /tmp/static_site_job.groovy /var/lib/jenkins/workspace/seed-job/static_site_job.groovy
-sudo chown -R jenkins:jenkins /var/lib/jenkins/workspace/seed-job
+sudo chown -R jenkins:jenkins /var/lib/jenkins/workspace
 
 # Disable timeout
 sudo mkdir -p /etc/systemd/system/jenkins.service.d
