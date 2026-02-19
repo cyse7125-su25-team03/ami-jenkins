@@ -20,10 +20,6 @@ multibranchPipelineJob('static-site') {
         }
     }
 
-    triggers {
-        periodic(1)  // Scan every 1 minute for webhook-triggered changes
-    }
-
     factory {
         workflowBranchProjectFactory {
             scriptPath('Jenkinsfile')

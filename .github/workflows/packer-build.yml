@@ -38,6 +38,6 @@ jobs:
             -var "jenkins_admin_password=${{ secrets.JENKINS_ADMIN_PASSWORD }}" \
             -var "dockerhub_username=${{ secrets.DOCKERHUB_USERNAME }}" \
             -var "dockerhub_token=${{ secrets.DOCKERHUB_TOKEN }}" \
-            -var "github_username=${{ secrets.GITHUB_USERNAME }}" \
-            -var "github_token=${{ secrets.GITHUB_TOKEN }}" \
+            -var "github_username=${{ secrets.GIT_USERNAME }}" \
+            -var "github_token=${{ secrets.GIT_TOKEN }}" \
             .
