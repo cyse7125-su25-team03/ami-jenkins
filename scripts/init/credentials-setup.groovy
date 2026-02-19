@@ -9,9 +9,19 @@ def jenkins = Jenkins.getInstance()
 def domain = Domain.global()
 def store = jenkins.getExtensionList('com.cloudbees.plugins.credentials.SystemCredentialsProvider')[0].getStore()
 
+// Read env vars from /etc/default/jenkins
+def envFile = new File('/etc/default/jenkins')
+def envVars = [:]
+envFile.eachLine { line ->
+    if (line && !line.startsWith('#') && line.contains('=')) {
+        def parts = line.split('=', 2)
+        envVars[parts[0].trim()] = parts[1].trim()
+    }
+}
+
 // ---- DockerHub Credentials ----
-def dockerUser = System.getenv('DOCKERHUB_USERNAME')
-def dockerPass = System.getenv('DOCKERHUB_TOKEN')
+def dockerUser = envVars['DOCKERHUB_USERNAME']
+def dockerPass = envVars['DOCKERHUB_TOKEN']
 
 if (dockerUser && dockerPass) {
     def dockerCreds = new UsernamePasswordCredentialsImpl(
@@ -28,8 +38,8 @@ if (dockerUser && dockerPass) {
 }
 
 // ---- GitHub Credentials ----
-def githubUser = System.getenv('GITHUB_USERNAME')
-def githubToken = System.getenv('GITHUB_TOKEN')
+def githubUser = envVars['GITHUB_USERNAME']
+def githubToken = envVars['GITHUB_TOKEN']
 
 if (githubUser && githubToken) {
     def githubCreds = new UsernamePasswordCredentialsImpl(

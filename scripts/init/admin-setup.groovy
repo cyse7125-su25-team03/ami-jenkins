@@ -6,10 +6,20 @@ def jenkins = Jenkins.getInstance()
 // Disable setup wizard
 jenkins.setInstallState(jenkins.install.InstallState.INITIAL_SETUP_COMPLETED)
 
+// Read env vars from /etc/default/jenkins
+def envFile = new File('/etc/default/jenkins')
+def envVars = [:]
+envFile.eachLine { line ->
+    if (line && !line.startsWith('#') && line.contains('=')) {
+        def parts = line.split('=', 2)
+        envVars[parts[0].trim()] = parts[1].trim()
+    }
+}
+
 // Create admin user
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-def adminUser = System.getenv('JENKINS_ADMIN_USER') ?: 'admin'
-def adminPass = System.getenv('JENKINS_ADMIN_PASSWORD') ?: 'admin'
+def adminUser = envVars['JENKINS_ADMIN_USER'] ?: 'admin'
+def adminPass = envVars['JENKINS_ADMIN_PASSWORD'] ?: 'admin'
 hudsonRealm.createAccount(adminUser, adminPass)
 jenkins.setSecurityRealm(hudsonRealm)
 
