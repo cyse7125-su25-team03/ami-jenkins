@@ -32,7 +32,7 @@ def configXml = """<?xml version='1.1' encoding='UTF-8'?>
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <javaposse.jobdsl.plugin.ExecuteDslScripts>
-      <targets>static_site_job.groovy</targets>
+      <targets>*.groovy</targets>
       <usingScriptText>false</usingScriptText>
       <sandbox>false</sandbox>
       <ignoreExisting>false</ignoreExisting>
