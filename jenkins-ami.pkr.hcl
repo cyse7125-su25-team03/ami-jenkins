@@ -181,8 +181,8 @@ build {
       "sudo chmod +x /tmp/install.sh",
       "sudo /tmp/install.sh",
       "sudo sed -i 's|__GITHUB_ORG__|${var.github_org}|g' /var/lib/jenkins/workspace/seed-job/static_site_job.groovy",
-      "sudo sed -i 's|__GITHUB_REPO__|${var.github_repo}|g' /var/lib/jenkins/workspace/seed-job/static_site_job.groovy"
-      "sudo sed -i 's|__GITHUB_ORG__|${var.github_org}|g' /var/lib/jenkins/workspace/seed-job/cve_processor_job.groovy"
+      "sudo sed -i 's|__GITHUB_REPO__|${var.github_repo}|g' /var/lib/jenkins/workspace/seed-job/static_site_job.groovy",
+      "sudo sed -i 's|__GITHUB_ORG__|${var.github_org}|g' /var/lib/jenkins/workspace/seed-job/cve_processor_job.groovy",
       "sudo sed -i 's|__GITHUB_WEBAPP_REPO__|${var.github_webapp_repo}|g' /var/lib/jenkins/workspace/seed-job/cve_processor_job.groovy"
     ]
   }
