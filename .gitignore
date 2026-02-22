@@ -101,3 +101,5 @@ node_modules/
 # Local test files
 test-*
 local-test-*
+
+*.iml
