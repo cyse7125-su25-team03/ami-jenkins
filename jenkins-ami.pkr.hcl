@@ -93,6 +93,11 @@ variable "github_webapp_repo" {
   default = "webapp-cve-processor"
 }
 
+variable "github_consumer_repo" {
+  type    = string
+  default = "webapp-cve-consumer"
+}
+
 source "amazon-ebs" "ubuntu" {
   profile         = var.aws_profile
   ami_name        = "${var.ami_name}-{{timestamp}}"
@@ -164,6 +169,11 @@ build {
     destination = "/tmp/cve_processor_job.groovy"
   }
 
+  provisioner "file" {
+    source      = "./jobs/cve_consumer_job.groovy"
+    destination = "/tmp/cve_consumer_job.groovy"
+  }
+
   # Write credentials to Jenkins environment file
   provisioner "shell" {
     inline = [
@@ -183,7 +193,9 @@ build {
       "sudo sed -i 's|__GITHUB_ORG__|${var.github_org}|g' /var/lib/jenkins/workspace/seed-job/static_site_job.groovy",
       "sudo sed -i 's|__GITHUB_REPO__|${var.github_repo}|g' /var/lib/jenkins/workspace/seed-job/static_site_job.groovy",
       "sudo sed -i 's|__GITHUB_ORG__|${var.github_org}|g' /var/lib/jenkins/workspace/seed-job/cve_processor_job.groovy",
-      "sudo sed -i 's|__GITHUB_WEBAPP_REPO__|${var.github_webapp_repo}|g' /var/lib/jenkins/workspace/seed-job/cve_processor_job.groovy"
+      "sudo sed -i 's|__GITHUB_WEBAPP_REPO__|${var.github_webapp_repo}|g' /var/lib/jenkins/workspace/seed-job/cve_processor_job.groovy",
+      "sudo sed -i 's|__GITHUB_ORG__|${var.github_org}|g' /var/lib/jenkins/workspace/seed-job/cve_consumer_job.groovy",
+      "sudo sed -i 's|__GITHUB_CONSUMER_REPO__|${var.github_consumer_repo}|g' /var/lib/jenkins/workspace/seed-job/cve_consumer_job.groovy"
     ]
   }
 }
